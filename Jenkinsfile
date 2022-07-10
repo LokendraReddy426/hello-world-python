@@ -8,7 +8,9 @@ pipeline {
 		PROJECT_ID = 'hashedin-350203'
                 CLUSTER_NAME = 'private-cluster'
                 LOCATION = 'us-central1-a'
-                CREDENTIALS_ID = 'kubernets'		
+                CREDENTIALS_ID = 'kubernets'
+		imageName = "mypythonapp"
+		dockerImage = ''
 	}
 	
     stages {
@@ -22,7 +24,7 @@ pipeline {
 		    steps {
 			    sh 'whoami'
 			    script {
-				    myimage = docker.build("lokey0426/hello-world-python:${env.BUILD_ID}")
+				    dockerImage = docker.build imageName
 			    }
 		    }
 	    }
