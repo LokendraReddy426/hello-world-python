@@ -20,14 +20,14 @@ pipeline {
 	    
 	    stage('Build') {
 		    steps {
-			    sh 'mvn clean package'
+			    sh 'app.py'
 		    }
 	    }
 	    
 	    stage('Test') {
 		    steps {
 			    echo "Testing..."
-			    sh 'mvn test'
+			    sh 'pytest tests/'
 		    }
 	    }
 	    
