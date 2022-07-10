@@ -18,19 +18,6 @@ pipeline {
 		    }
 	    }
 	    
-	    stage('Build') {
-		    steps {
-			    sh 'python app.py'
-		    }
-	    }
-	    
-	    stage('Test') {
-		    steps {
-			    echo "Testing..."
-			    sh 'pytest tests/'
-		    }
-	    }
-	    
 	    stage('Build Docker Image') {
 		    steps {
 			    sh 'whoami'
