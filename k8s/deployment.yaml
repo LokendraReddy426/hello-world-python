@@ -22,7 +22,7 @@ spec:
   ports:
     - port: 80
       targetPort: http-api
-  type: ClusterIP
+  type: LoadBalancer
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
       - name: {{build.name}}
-        image: {{build.images["Dockerfile"]}}
+        image: lokey0426/hello-world-python:tagversion
         imagePullPolicy: Always
         resources:
           requests:
