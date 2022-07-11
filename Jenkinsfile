@@ -1,13 +1,9 @@
 pipeline {
     agent any
-	tools {
-		docker 'Docker'
-	}
-	
 	environment {
 		PROJECT_ID = 'hashedin-350203'
-                CLUSTER_NAME = 'private-cluster'
-                LOCATION = 'us-central1-a'
+                CLUSTER_NAME = 'my-demo-cluster'
+                LOCATION = 'us-east1-c'
                 CREDENTIALS_ID = 'kubernets'
 		imageName = "mypythonapp"
 		dockerImage = ''
@@ -19,29 +15,6 @@ pipeline {
 			    checkout scm
 		    }
 	    }
-	    
-	    stage('Build Docker Image') {
-		    steps {
-			    sh 'whoami'
-			    script {
-				    dockerImage = docker.build imageName
-			    }
-		    }
-	    }
-	    
-	    stage("Push Docker Image") {
-		    steps {
-			    script {
-				    echo "Push Docker Image"
-				    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-            				sh "docker login -u lokey0426 -p ${dockerhub}"
-				    }
-				        myimage.push("${env.BUILD_ID}")
-				    
-			    }
-		    }
-	    }
-	    
 	    stage('Deploy to K8s') {
 		    steps{
 			    echo "Deployment started ..."
