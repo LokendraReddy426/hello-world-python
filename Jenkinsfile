@@ -5,6 +5,7 @@ pipeline {
                 CLUSTER_NAME = 'my-demo-cluster'
                 LOCATION = 'us-east1-c'
                 CREDENTIALS_ID = 'kubernets'
+		docker_ID = 'dockerhub'
 		imageName = "mypythonapp"
 		dockerImage = ''
 	}
@@ -18,9 +19,7 @@ pipeline {
 	    stage('docker login') {
            steps {
                script {
-                   // This step should not normally be used in your script. Consult the inline help for details.
-withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/repositories') {
-}
+		       sh "docker login -u lokey0426 -p ${dockerhub}"
                }
            }
        }
