@@ -15,6 +15,15 @@ pipeline {
 			    checkout scm
 		    }
 	    }
+	    stage('docker login') {
+           steps {
+               script {
+                   // This step should not normally be used in your script. Consult the inline help for details.
+withDockerRegistry(credentialsId: 'dockerhub', url: 'https://hub.docker.com/repositories') {
+}
+               }
+           }
+       }
 	    stage('Deploy to K8s') {
 		    steps{
 			    echo "Deployment started ..."
