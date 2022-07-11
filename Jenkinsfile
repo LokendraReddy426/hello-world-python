@@ -21,7 +21,7 @@ pipeline {
 			    sh 'ls -ltr'
 			    sh 'pwd'
 			    sh "sed -i 's/tagversion/${env.BUILD_ID}/g' service.yaml"
-				sh "sed -i 's/tagversion/${env.BUILD_ID}/g' /k8s/deployment.yaml"
+				sh "sed -i 's/tagversion/${env.BUILD_ID}/g' hello-world-python/k8s/deployment.yaml"
 			    echo "Start deployment of service.yaml"
 			    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'service.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
 				echo "Start deployment of deployment.yaml"
