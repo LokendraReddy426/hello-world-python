@@ -1,53 +1,41 @@
+# Deployments  Rolling Update
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app-deployment
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 30 
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      name: python-pod-app
+      labels:
+        app: python-app
+    spec:
+      containers:
+      - name: python-app-container
+        image: lokey0426/hello-python-app:8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
 ---
+# Cluster IP  Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{build.name}}
-  {%- if "endpoint" in build.profile %}
-  annotations:
-    getambassador.io/config: |
-      ---
-      apiVersion: ambassador/v0
-      kind: Mapping
-      name: {{build.name}}-mapping
-      prefix: {{build.profile.endpoint}}
-      service: {{build.name}}
-      {%- if "weight" in build.profile %}
-      weight: {{build.profile.weight}}
-      {%- endif %}
-  {%- endif %}
+  name: my-python-app-service
 spec:
-  selector:
-    app: {{build.name}}
-  ports:
-    - port: 80
-      targetPort: http-api
   type: LoadBalancer
----
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
-  name: {{build.name}}
-spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: {{build.name}}
-    spec:
-      containers:
-      - name: {{build.name}}
-        image: {{build.images["Dockerfile"]}}
-        imagePullPolicy: Always
-        resources:
-          requests:
-            memory: 0.1G
-            cpu: 0.1
-          limits:
-            memory: {{build.profile.max_memory}}
-            cpu: {{build.profile.max_cpu}}
-        ports:
-        - name: http-api
-          containerPort: 8080
+  selector:
+    app: python-app
+  ports:
+  - port: 6000
+    targetPort: 5000
