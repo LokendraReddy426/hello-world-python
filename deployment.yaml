@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
       - name: {{build.name}}
-        image: lokey0426/hello-world-python:tagversion
+        image: {{build.images["Dockerfile"]}}
         imagePullPolicy: Always
         resources:
           requests:
